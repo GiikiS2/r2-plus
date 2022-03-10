@@ -8,8 +8,10 @@
     <meta data-n-head="ssr" data-hid="theme-color" name="theme-color" content="#1778ff" />
     <meta name="keywords" content="discord, r2" />
     <meta property="og:image" content="<%= `https://i3.ytimg.com/vi/${videoid(titulo.link)}/maxresdefault.jpg` %>" />
+    <meta property="og:image:width" content="250">
+    <meta property="og:image:height" content="250">
     <meta name="title" content="R2+ <%= serieu %>" />
-    <meta name="description" content="assiste <%= serieu %>" />
+    <meta name="description" content="assista <%= serieu %>" />
     <title>R2+ <%= serieu %></title>
     <link id="favicon" rel="icon" href="assets/R2_Logo.png" type="image/x-icon" />
     <link href="css/style.css" rel="stylesheet">
@@ -57,7 +59,8 @@
                     <div class="flex-container left">
 
                         <% titulo.temps[season.temp - 1].eps.forEach(ep => { %>
-                        <a href="<%= `https://www.youtube.com/watch?v=${ep.snippet.resourceId.videoId}&list=${ep.snippet.playlistId}` %>">
+                        <a
+                            href="<%= `https://www.youtube.com/watch?v=${ep.snippet.resourceId.videoId}&list=${ep.snippet.playlistId}` %>">
                             <div class="server" data-aos="zoom-in" data-aos-offset="-100">
                                 <img class="server-icon" src="<%= ep.snippet.thumbnails.default.url %>">
                                 <div class="server-name">
