@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta data-n-head="ssr" data-hid="theme-color" name="theme-color" content="#1778ff" />
+  <meta name="keywords" content="discord, r2" />
+  <meta property="og:image" content="https://giiki.herokuapp.com/assets/fakelove.webp" />
+  <meta name="title" content="R2+" />
+  <meta name="description" content="assiste séries" />
+  <title>R2+</title>
+  <link id="favicon" rel="icon" href="assets/R2_Logo.png" type="image/x-icon" />
+  <link href="css/style.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/fe60fb8790.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+</head>
+
+<body>
+
+  <div class="header" id="home">
+    <%- include('partials/navbar.ejs') %>
+    <div class="meio" style="height: 550px; margin-top: 75px">
+      <img src="../assets/R2_Logo.png" class="logo-front" data-aos="zoom-in">
+      <h1 data-aos="zoom-in"> Bem vindo ao R2+ </h1>
+      <p data-aos="zoom-in"> Aqui você tem acesso a diversos machinimas de fortnite, para uma melhor experiência faça login com o discord.
+      </p>
+    </div>
+  </div>
+  <%- include('partials/discord.ejs') %>
+  <%- include('partials/equipe.ejs') %>
+
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    AOS.init();
+  </script>
+</body>
+
+</html>

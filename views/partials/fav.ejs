@@ -1,0 +1,3 @@
+<%if(!req.session.bearer_token){} else { %>
+    <input class="star" type="checkbox" title="favoritar"
+    <% if(user.favs.includes(serie.nome)){ %> checked <%}}%>

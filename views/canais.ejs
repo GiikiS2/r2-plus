@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta data-n-head="ssr" data-hid="theme-color" name="theme-color" content="#1778ff" />
+    <meta name="keywords" content="discord, r2" />
+    <meta property="og:image" content="https://giiki.herokuapp.com/assets/fakelove.webp" />
+    <meta name="title" content="R2+" />
+    <meta name="description" content="assiste séries" />
+    <title>R2+ canais</title>
+    <link id="favicon" rel="icon" href="assets/R2_Logo.png" type="image/x-icon" />
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/fe60fb8790.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+</head>
+
+<body>
+
+    <%- include('partials/navbar.ejs') %>
+
+    <div class="slideshow-container">
+
+        <div class="mySlides fade">
+            <div class="numbertext">1 / 2</div>
+            <img src="./assets/ajornada2.png" style="width:100%">
+            <div class="text">A jornada - 2° temporada em breve</div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext">2 / 2</div>
+            <img src="./assets/bg2.jpg" style="width:100%">
+        </div>
+
+
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+    </div>
+
+    <div class="series">
+        <h1 class="a">Canais disponíveis:</h1>
+        <div class="container">
+            <% inv.forEach(canal => { %>
+
+            <a href="/user?id=<%= canal.id %>">
+                <div class="server c2" data-aos="zoom-in" data-aos-offset="-100">
+
+                    <img class="server-icon canal" src=<%= canal.pfp %>>
+                    <div class="server-name">
+                        <%= canal.nome %>
+                    </div>
+                </div>
+            </a>
+
+            <% }) %>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        AOS.init();
+    </script>
+</body>
+
+</html>

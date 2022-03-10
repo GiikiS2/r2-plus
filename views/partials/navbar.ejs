@@ -1,0 +1,37 @@
+<!-- No bacwards compatabilty yet: I'm a terrible person!-->
+<div class="navdiv">
+    <ul class="menu-bar">
+        <a href="/">
+            <li>
+                <i class="fas fa-home"></i> Início
+            </li>
+        </a>
+        <a href="/streaming?type=series">
+            <li>
+                <i class="fas fa-ticket"></i> Séries
+            </li>
+        </a>
+        <a href="streaming?type=canais">
+            <li>
+                <i class="fas fa-address-book"></i> Canais
+            </li>
+        </a>
+
+        <% if(!req.session.bearer_token) { %>
+        <a href="/login">
+            <li>
+                <i class="fas fa-user"></i> Login
+            </li>
+        </a>
+        <% } %>
+
+        <% if(req.session.bearer_token) {%>
+        <a href="/user?id=<%= json.id %>">
+            <li>
+                <!-- <img class="pfpli" src=<=`https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.png?size=256`%>> -->
+                <i class="fas fa-user"></i> <%= json.username %>
+            </li>
+        </a>
+        <% } %>
+    </ul>
+</div>

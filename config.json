@@ -1,0 +1,10 @@
+{
+    "session": {
+      "secret": "cadagi",
+      "cookie": {
+          "maxAge": 86400000
+      },
+      "resave": true,
+      "saveUninitialized": false
+  }
+  }
