@@ -265,6 +265,8 @@ app.get("/user", async function (req, res) {
             return serie
         }
 
+        const result = await pdi.Inv.findOne({ id: user.id })
+
         res.render("../views/perfil.ejs", {
             req,
             json,
@@ -273,7 +275,8 @@ app.get("/user", async function (req, res) {
             videoid,
             id,
             resu,
-            serief
+            serief,
+            result
         });
     }
 

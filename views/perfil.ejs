@@ -71,17 +71,19 @@
         <%if(resu){ %>
 
         <h1 class="h1b">Séries:</h1>
-        <div class="container">
+        <div class="container left">
 
-            <% inventario.get(yt => yt.id === id).series.forEach(series => { %>
+            <% result.series.forEach(series => { %>
 
             <a href="<%= series.link %>">
                 <div class="server" data-aos="zoom-in" data-aos-offset="-100">
                     <img class="server-icon" src=<%= `https://i3.ytimg.com/vi/${videoid(series.link)}/hqdefault.jpg` %>>
-
+    
                     <%if(!req.session.bearer_token){} else { %>
-                    <input class="star" type="checkbox" title="favoritar" <% if(user.favs.includes(serie.nome)){ %>
-                        checked <%}%> > <%}%> <div class="server-name">
+                    <form action="/fav" method="POST" />
+                    <input type="hidden" name="serie" value="<%=serie.nome%>" />
+                    <input class="star" onchange="this.form.submit()" name="fav" type="checkbox" title="favoritar"
+                        <% if(user.favs.includes(series.nome)){ %> checked <%}%> > </form> <%}%> <div class="server-name">
                     <%= series.nome %>
                 </div>
             </a>
