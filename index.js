@@ -22,17 +22,11 @@ const https = require('https');
 
 app.use(require("express-session")(config.session));
 
-const {
-    Database
-} = require('simpl.db');
-const db = new Database();
+const pdi = require("./inv");
 
-const inv = require('./collections/inventario.json')
+const pdb = require("./db");
 
-const Users = db.createCollection('users');
-
-const inventario = db.createCollection('inventario');
-
+require("./back")
 
 app.get("/login/callback", async (req, resp) => {
     const accessCode = req.query.code;
@@ -69,26 +63,30 @@ app.get("/login/callback", async (req, resp) => {
         console.log("usuario desconhecido logou")
     }
 
-    if (!Users.get(user => user.id === ruser.id)) {
+    if (!await pdb.User.findOne({
+            id: ruser.id
+        })) {
         console.log("usuario não encontrado na db")
         if (!ruser.id) {
             consoel.log("db não criada por falta de informação")
         } else {
             let pfp = `https://cdn.discordapp.com/avatars/${ruser.id}/${ruser.avatar}.png?size=256`
 
-            Users.create({
+            await pdb.User.create({
                 name: ruser.username,
                 id: ruser.id,
                 pfp: pfp,
                 favs: []
             });
         }
-        if (Users.get(user => user.id === ruser.id)) {
+        if (await pdb.User.findOne({
+                id: ruser.id
+            })) {
             console.log("db criada")
         }
     }
 
-    resp.redirect("/user?id="+ruser.id);
+    resp.redirect("/user?id=" + ruser.id);
 });
 
 app.get("/login", (req, res) => {
@@ -140,48 +138,6 @@ function getpfp(str) {
     })
 }
 
-
-inv.forEach(canal => {
-    let json = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${channelid(canal.link)}&key=${process.env["ytkey"]}`
-    axios.get(json).then(res => {
-        let pfp = res.data.items[0].snippet.thumbnails.medium.url || "https://i.kym-cdn.com/entries/icons/original/000/034/421/cover1.jpg";
-        if (!canal.pfp) {
-            inventario.update(
-                user => user.pfp = pfp,
-                target => target.nome === canal.nome
-            )
-        } else if (canal.pfp !== pfp) {
-            inventario.update(
-                user => user.pfp = pfp,
-                target => target.nome === canal.nome
-            )
-        }
-    })
-})
-
-inv.forEach(canal => {
-    canal.series.forEach(r2d2 => {
-
-        r2d2.temps.forEach(tempse => {
-
-            axios.get(`https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId(tempse.link)}&key=${process.env["ytkey"]}`).then(res => {
-                inventario.update(
-                    a => a.series.forEach(b => {
-                        b.temps.forEach(tempo => {
-                            if (tempo.link === tempse.link) {
-                                tempo.eps = res.data.items
-                            }
-                        })
-                    })
-                )
-            })
-
-        })
-
-    })
-})
-
-
 app.get("/streaming", async function (req, res) {
 
     const {
@@ -195,26 +151,42 @@ app.get("/streaming", async function (req, res) {
     }); // Fetching user data
     const json = await duser.json();
 
-    let user = Users.get(user => user.id === json.id)
+    let user = await pdb.User.findOne({
+        id: json.id
+    })
 
     if (type === "canais") {
+
+        let lol = await pdi.Inv.find({})
+
         res.render("../views/canais.ejs", {
             req,
             json,
             type,
-            inv,
             videoid,
             channelid,
+            lol
         });
     } else {
+
+        let canalrandom = Math.floor(Math.random() * pdi.Inv.length);
+
+        let inv = await pdi.Inv.find({})
+
+        let canal = inv[canalrandom]
+
+        let serierandom = Math.floor(Math.random() * canal.series.length);
+        let titulo = canal.series[serierandom]
+
         res.render("../views/series.ejs", {
             req,
             json,
             type,
-            inv,
             videoid,
             user,
-            inventario
+            pdi,
+            titulo,
+            inv
         });
     }
 });
@@ -234,23 +206,24 @@ app.get("/serie", async function (req, res) {
     }); // Fetching user data
     const json = await duser.json();
 
-    let user = Users.get(user => user.id === json.id)
+    let user = await pdb.User.findOne({
+        id: json.id
+    })
 
-    const canal = inventario.get(yt => yt.series.some(s => s.nome === serieu));
+    let lol = await pdi.Inv.find({})
 
-    const titulo = canal.series.find(s => s.nome === serieu);
+    let canal = lol.filter(yt => yt.series.some(s => s.nome === serieu));
+
+    const titulo = canal[0].series.find(s => s.nome === serieu);
 
     res.render("../views/serie.ejs", {
         req,
         json,
-        inv,
         videoid,
         serieu,
-        inventario,
         canal,
         titulo,
-        playlistId,
-        https
+        playlistId
     })
 });
 
@@ -267,19 +240,40 @@ app.get("/user", async function (req, res) {
         id
     } = req.query;
 
-    if (!Users.get(user => user.id === id)) {
+    if (!await pdb.User.findOne({
+            id: id
+        })) {
         res.redirect("/")
     } else {
-        let user = Users.get(user => user.id === id)
+        let user = await pdb.User.findOne({
+            id: id
+        })
+
+        if (!await pdi.Inv.findOne({
+                id: user.id
+            })) {
+            resu = false
+        } else {
+            resu = true
+        }
+
+        let lol = await pdi.Inv.find({})
+
+        function serief(seriep) {
+            const result = lol.filter(yt => yt.series.some(s => s.nome === seriep));
+            const serie = result[0].series.find(s => s.nome === seriep)
+            return serie
+        }
 
         res.render("../views/perfil.ejs", {
             req,
             json,
-            inv,
             user,
-            inventario,
+            pdi,
             videoid,
-            id
+            id,
+            resu,
+            serief
         });
     }
 
@@ -299,23 +293,31 @@ app.post('/fav', async function (req, res, next) {
     }); // Fetching user data
     const json = await duser.json();
 
-    let user = Users.get(user => user.id === json.id)
+    let user = await pdb.User.findOne({
+        id: json.id
+    })
 
     let sen = req.body.serie
 
     if (req.body.fav) {
         //favoritou
-        Users.update(
-            user => user.favs.push(sen),
-            target => target.id === user.id
-        )
+        await pdb.User.findOneAndUpdate({
+            id: user.id
+        }, {
+            $push: {
+                favs: sen
+            }
+        });
     } else {
         //retirar dos favs
         if (user.favs.some(s => s === sen)) {
-            Users.update(
-                user => user.favs = user.favs.filter(f => f !== sen),
-                target => target.id === user.id
-            )
+            await pdb.User.findOneAndUpdate({
+                id: user.id
+            }, {
+                $pull: {
+                    favs: sen
+                }
+            });
         }
 
     }

@@ -56,15 +56,7 @@
     </div>
 
     <!-- fim do slideshow -->
-
-    <%
-        let canalrandom = Math.floor(Math.random() * inv.length );
-    let canal = inventario.get(a => a.nome === inv[canalrandom].nome)
-
-    let serierandom = Math.floor(Math.random() * canal.series.length );
-    let titulo = canal.series[serierandom]
-      %>
-
+    
     <div class="series">
         <div class="toop">
             <h1>Séries disponíveis: </h1> <a href="/serie?serieu=<%= titulo.nome %>">
