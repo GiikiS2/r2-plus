@@ -81,7 +81,7 @@
     
                     <%if(!req.session.bearer_token){} else { %>
                     <form action="/fav" method="POST" />
-                    <input type="hidden" name="serie" value="<%=serie.nome%>" />
+                    <input type="hidden" name="serie" value="<%=series.nome%>" />
                     <input class="star" onchange="this.form.submit()" name="fav" type="checkbox" title="favoritar"
                         <% if(user.favs.includes(series.nome)){ %> checked <%}%> > </form> <%}%> <div class="server-name">
                     <%= series.nome %>
