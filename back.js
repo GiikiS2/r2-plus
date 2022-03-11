@@ -16,7 +16,9 @@ inv.forEach(canal => {
     })
 })
 
-inv.forEach(canal => {
+
+let lol = await pdi.Inv.find({})
+lol.forEach(canal => {
     canal.series.forEach(r2d2 => {
 
         r2d2.temps.forEach(tempse => {
@@ -37,3 +39,6 @@ inv.forEach(canal => {
 
     })
 })
+
+
+ata()
