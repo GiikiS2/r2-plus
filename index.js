@@ -326,14 +326,71 @@ app.post('/fav', async function (req, res, next) {
     }
 })
 
-app.get("/api/catalago", async function (req, res) {
-    let catalago = require("./collections/inventario.json")
-    res.send(catalago)
-});
+app.post('/banner', async function (req, res, next) {
 
-app.get("/api/users", async function (req, res) {
-    let catalago = require("./collections/users.json")
-    res.send(catalago)
+    if (!req.session.bearer_token) {
+        return res.redirect("/streaming")
+    }
+
+    const duser = await fetch(`https://discord.com/api/users/@me`, {
+        headers: {
+            Authorization: `Bearer ${req.session.bearer_token}`
+        },
+    }); // Fetching user data
+    const json = await duser.json();
+
+    let link = req.body.bannerlink
+
+    await pdb.User.findOneAndUpdate({
+        id: json.id
+    }, { banner: link })
+    .then(() =>{
+        res.redirect("/user?id=" + json.id);
+    })
+   
+})
+
+app.post('/pfp', async function (req, res, next) {
+
+    if (!req.session.bearer_token) {
+        return res.redirect("/streaming")
+    }
+
+    const duser = await fetch(`https://discord.com/api/users/@me`, {
+        headers: {
+            Authorization: `Bearer ${req.session.bearer_token}`
+        },
+    }); // Fetching user data
+    const json = await duser.json();
+
+    let avatar = req.body.avatar
+
+    await pdb.User.findOneAndUpdate({
+        id: json.id
+    }, { pfp: avatar })
+    .then(() =>{
+        res.redirect("/user?id=" + json.id);
+    })
+   
+})
+
+app.get("/logout", async (req, resp) => {
+    if (!req.session.bearer_token) return resp.redirect("/");
+
+    const data = new FormData();
+    data.append("client_id", process.env["clientid"]);
+    data.append("client_secret", process.env["clientsecret"]);
+    data.append('token', req.session.bearer_token);
+
+    const json = await (
+        await fetch("https://discord.com/api/oauth2/token/revoke", {
+            method: "POST",
+            body: data,
+        })
+    ).json();
+    req.session.bearer_token = json.access_token;
+
+    resp.redirect("/");
 });
 
 app.get("*", async function (req, res) {

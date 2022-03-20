@@ -19,9 +19,31 @@
 
 <body>
 
+    <% if(id === json.id) {%>
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close"><i class="fa-solid fa-xmark"></i></span>
+            <h1>Foto de perfil: </h1>
+            <hr>
+            <img class="pfp iconcenter" src="<%=user.pfp%>">
+            <div class="ff">
+                <form name="myForm" onsubmit="pfpval()" action="/pfp" method="POST" required>
+                    <div class="m-c"> <i class="fa-solid fa-user-pen"></i> <input class="imgc" type="text" id="avatar"
+                            name="avatar" placeholder="avatar link">
+                        <button type="submit" class="send"> Enviar </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <% } %>
+
     <%- include('partials/navbar.ejs') %>
 
-    <% let img = user.pfp || user.banner%>
+    <%- include('partials/logout.ejs') %>
+
+    <% let img =  user.banner || user.pfp %>
 
     <div class="bp" style="background-image: url(<%=img%>)">
         <div class="bg" style="
@@ -31,10 +53,22 @@
           rgba(0, 0, 0, 0.597) 65%,
           rgba(238, 234, 255, 0) 90%
         )">
+            <% if(id === json.id) {%>
+            <form name="formbanner" action="/banner" method="POST" onsubmit="validateForm()" required>
+                <div class="imgup"> <i class="fa-solid fa-user-pen"></i> <input class="imgc" type="text" id="bannerlink"
+                        name="bannerlink" placeholder="banner link"> <button type="submit" class="nobg"> <i
+                            class="fa-solid fa-floppy-disk"></i>
+                    </button>
+                </div>
+            </form>
+            <% } %>
         </div>
         <div>
             <div class="icon">
                 <img class="pfp" src="<%=user.pfp%>">
+                <% if(id === json.id) {%>
+                <button id="myBtn" class="pfp-c"> <i class="fa-solid fa-camera-rotate"></i> </button>
+                <% } %>
             </div>
             <h1 class="name"><%= user.name %></h1>
         </div>
@@ -54,7 +88,9 @@
                 <%
             let tags = ["membro"]
 
-            if(user.id === "240269142848962560" || "692910323383926865" || "759081738432938054"){ tags.push("dono");}
+            if(user.id == "240269142848962560"){ tags.push("dono");}
+            if(user.id == "692910323383926865"){ tags.push("dono");}
+            if(user.id == "759081738432938054"){ tags.push("dono");}
 
             if(resu) tags.push("criador");
                         
@@ -78,12 +114,13 @@
             <a href="<%= series.link %>">
                 <div class="server" data-aos="zoom-in" data-aos-offset="-100">
                     <img class="server-icon" src=<%= `https://i3.ytimg.com/vi/${videoid(series.link)}/hqdefault.jpg` %>>
-    
+
                     <%if(!req.session.bearer_token){} else { %>
                     <form action="/fav" method="POST" />
                     <input type="hidden" name="serie" value="<%=series.nome%>" />
                     <input class="star" onchange="this.form.submit()" name="fav" type="checkbox" title="favoritar"
-                        <% if(user.favs.includes(series.nome)){ %> checked <%}%> > </form> <%}%> <div class="server-name">
+                        <% if(user.favs.includes(series.nome)){ %> checked <%}%> > </form> <%}%> <div
+                        class="server-name">
                     <%= series.nome %>
                 </div>
             </a>
@@ -125,6 +162,77 @@
     <script src="js/main.js"></script>
     <script>
         AOS.init();
+    </script>
+
+    <script>
+        function checkIfImageExists(url, callback) {
+            const img = new Image();
+            img.src = url;
+
+            if (img.complete) {
+                callback(true);
+            } else {
+                img.onload = () => {
+                    callback(true);
+                };
+
+                img.onerror = () => {
+                    callback(false);
+                };
+            }
+        }
+
+        function validateForm() {
+            var z = document.forms["formbanner"]["bannerlink"].value;
+            if (z == "" || z == null) {
+                return alert("Preencha o campo com o link da imagem que queres como banner!");
+            }
+        }
+
+         function pfpval() {
+            var z = document.forms["myForm"]["avatar"].value;
+            if (z == "" || z == null) {
+                return alert("Preencha o campo com o link da imagem que queres como avatar!");
+            }
+        }
+
+
+        // USAGE
+        checkIfImageExists('http://website/images/img.png', (exists) => {
+            if (exists) {
+                console.log('Image exists. ')
+            } else {
+                console.error('Image does not exists.')
+            }
+        });
+    </script>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 </body>
 

@@ -8,6 +8,7 @@ const schemaudb = mongoose.Schema({
     name: String,
     id: String,
     pfp: { type: String, default: `https://media.discordapp.net/attachments/730426604228050945/951817926921580594/unknown.png`},
+    banner: { type: String},
     favs: Array
 });
 
