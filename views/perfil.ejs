@@ -165,22 +165,6 @@
     </script>
 
     <script>
-        function checkIfImageExists(url, callback) {
-            const img = new Image();
-            img.src = url;
-
-            if (img.complete) {
-                callback(true);
-            } else {
-                img.onload = () => {
-                    callback(true);
-                };
-
-                img.onerror = () => {
-                    callback(false);
-                };
-            }
-        }
 
         function validateForm() {
             var z = document.forms["formbanner"]["bannerlink"].value;
@@ -189,22 +173,12 @@
             }
         }
 
-         function pfpval() {
+        function pfpval() {
             var z = document.forms["myForm"]["avatar"].value;
             if (z == "" || z == null) {
                 return alert("Preencha o campo com o link da imagem que queres como avatar!");
             }
         }
-
-
-        // USAGE
-        checkIfImageExists('http://website/images/img.png', (exists) => {
-            if (exists) {
-                console.log('Image exists. ')
-            } else {
-                console.error('Image does not exists.')
-            }
-        });
     </script>
 
     <script>
