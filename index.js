@@ -26,8 +26,6 @@ const pdi = require("./inv");
 
 const pdb = require("./db");
 
-//require("./back")
-
 app.get("/login/callback", async (req, resp) => {
     const accessCode = req.query.code;
     if (!accessCode) return resp.send("No access code specified");
@@ -70,7 +68,7 @@ app.get("/login/callback", async (req, resp) => {
         if (!ruser.id) {
             consoel.log("db não criada por falta de informação")
         } else {
-            let pfp = `https://cdn.discordapp.com/avatars/${ruser.id}/${ruser.avatar}.png?size=256`
+            let pfp = `https://cdn.discordapp.com/avatars/${ruser.id}/${ruser.avatar}.png`
 
             await pdb.User.create({
                 name: ruser.username,
@@ -137,6 +135,9 @@ function getpfp(str) {
         return pfp;
     })
 }
+
+
+
 
 app.get("/streaming", async function (req, res) {
 
@@ -216,6 +217,14 @@ app.get("/serie", async function (req, res) {
 
     const titulo = canal[0].series.find(s => s.nome === serieu);
 
+let temps = []
+
+for (const b of titulo.temps) {
+  const response = await axios.get(`https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId(b.link)}&key=${process.env["ytkey"]}`).catch(() => {})
+
+  temps.push(response.data)
+}
+
     res.render("../views/serie.ejs", {
         req,
         json,
@@ -223,7 +232,7 @@ app.get("/serie", async function (req, res) {
         serieu,
         canal,
         titulo,
-        playlistId
+        temps
     })
 });
 
@@ -265,7 +274,9 @@ app.get("/user", async function (req, res) {
             return serie
         }
 
-        const result = await pdi.Inv.findOne({ id: user.id })
+        const result = await pdi.Inv.findOne({
+            id: user.id
+        })
 
         res.render("../views/perfil.ejs", {
             req,
@@ -342,12 +353,14 @@ app.post('/banner', async function (req, res, next) {
     let link = req.body.bannerlink
 
     await pdb.User.findOneAndUpdate({
-        id: json.id
-    }, { banner: link })
-    .then(() =>{
-        res.redirect("/user?id=" + json.id);
-    })
-   
+            id: json.id
+        }, {
+            banner: link
+        })
+        .then(() => {
+            res.redirect("/user?id=" + json.id);
+        })
+
 })
 
 app.post('/pfp', async function (req, res, next) {
@@ -366,12 +379,14 @@ app.post('/pfp', async function (req, res, next) {
     let avatar = req.body.avatar
 
     await pdb.User.findOneAndUpdate({
-        id: json.id
-    }, { pfp: avatar })
-    .then(() =>{
-        res.redirect("/user?id=" + json.id);
-    })
-   
+            id: json.id
+        }, {
+            pfp: avatar
+        })
+        .then(() => {
+            res.redirect("/user?id=" + json.id);
+        })
+
 })
 
 app.get("/logout", async (req, resp) => {

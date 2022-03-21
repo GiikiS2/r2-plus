@@ -58,7 +58,7 @@
                 <div class="videolist tabcontent" id="<%= season.temp %>" style="margin-top: 50px;">
                     <div class="flex-container left">
 
-                        <% titulo.temps[season.temp - 1].eps.forEach(ep => { %>
+                        <% temps[season.temp - 1].items.forEach(ep => { %>
                         <a
                             href="<%= `https://www.youtube.com/watch?v=${ep.snippet.resourceId.videoId}&list=${ep.snippet.playlistId}` %>">
                             <div class="server" data-aos="zoom-in" data-aos-offset="-100">
