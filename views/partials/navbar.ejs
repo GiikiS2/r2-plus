@@ -17,7 +17,34 @@
             </li>
         </a>
 
-        <% if(!req.session.bearer_token) { %>
+        <%
+        if(json.id == "240269142848962560"){ %>
+        <a href="/dashboard">
+            <li>
+                <i class="fa-solid fa-gear
+                "></i> Dashboard
+            </li>
+        </a> <% } %>
+
+        <%
+        if(json.id == "759081738432938054"){ %>
+        <a href="/dashboard">
+            <li>
+                <i class="fa-solid fa-gear
+                "></i> Dashboard
+            </li>
+        </a> <% } %>
+
+        <%
+        if(json.id == "692910323383926865"){ %>
+        <a href="/dashboard">
+            <li>
+                <i class="fa-solid fa-gear
+                "></i> Dashboard
+            </li>
+        </a> <% } %>
+
+        <% if(!req.session.bearer_token) {%>
         <a href="/login">
             <li>
                 <i class="fas fa-user"></i> Login

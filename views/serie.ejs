@@ -46,7 +46,11 @@
 
         <div class="flex-container">
 
-            <div>
+            <div class="visibledevice">
+                
+            </div>
+
+            <div class="visibledesktop">
                 <div class="dsc blk">
                     <i class="fas fa-film"></i> Temporadas: <% titulo.temps.forEach( season => { %>
                     <button <% if(season.temp === "1"){ %> id="defaultOpen" <% } %> class="tablinks"
