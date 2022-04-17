@@ -46,53 +46,55 @@
 
         <div class="flex-container">
 
-            <div class="visibledevice">
-                
-            </div>
-
-            <div class="visibledesktop">
+            <div>
                 <div class="dsc blk">
                     <i class="fas fa-film"></i> Temporadas: <% titulo.temps.forEach( season => { %>
-                    <button <% if(season.temp === "1"){ %> id="defaultOpen" <% } %> class="tablinks"
+                    <button <% if(season.temp === "1"){ %> id="defaultOpen" <% } %> class="tablinks visibledesktop"
                         onclick="openCity(event, <%= season.temp %>)"><%= season.temp %></button>
                     <% }) %>
                 </div>
 
-                <% titulo.temps.forEach( season => { %>
-                <div class="videolist tabcontent" id="<%= season.temp %>" style="margin-top: 50px;">
-                    <div class="flex-container left">
+            <% titulo.temps.forEach( season => { %>
+            <div class="videolist tabcontent" id="<%= season.temp %>" style="margin-top: 50px;">
+                <div class="flex-container left">
 
-                        <% temps[season.temp - 1].items.forEach(ep => { %>
-                        <a
-                            href="<%= `https://www.youtube.com/watch?v=${ep.snippet.resourceId.videoId}&list=${ep.snippet.playlistId}` %>">
-                            <div class="server" data-aos="zoom-in" data-aos-offset="-100">
-                                <img class="server-icon" src="<%= ep.snippet.thumbnails.default.url %>">
-                                <div class="server-name">
-                                    <%= ep.snippet.title %>
-                                </div>
+                    <% temps[season.temp - 1].items.forEach(ep => { %>
+                    <a
+                        href="<%= `https://www.youtube.com/watch?v=${ep.snippet.resourceId.videoId}&list=${ep.snippet.playlistId}` %>">
+                        <div class="server visibledesktop" data-aos="zoom-in" data-aos-offset="-100">
+                            <img class="server-icon" src="<%= ep.snippet.thumbnails.default.url %>">
+                            <div class="server-name">
+                                <%= ep.snippet.title %>
                             </div>
-                        </a>
-                        <% })%>
+                        </div>
+                    </a>
+                    <% })%>
 
-                    </div>
+                    <% titulo.temps.forEach( season => { %>
+                        <button class="temp-ic visibledevice">
+                            <%= season.temp %>
+                        </button>
+                    <% }) %>
 
-                </div>
-                <% }) %>
-            </div>
-
-            <div class="dir">
-                <% if(titulo.desc) {%>
-                <div class="dsc blk">
-                    <i class="fas fa-tags"></i> Sinopse: <%= titulo.desc %>
-                </div>
-                <% } %>
-                <div class="dsc blk">
-                    <i class="fas fa-address-book"></i> produzido por: <% if(titulo.crew) { %>
-                    <%= titulo.crew.join(" | ") %> <% } else {%> <%= canal.nome %> <% } %>
                 </div>
 
             </div>
+            <% }) %>
         </div>
+
+        <div class="dir">
+            <% if(titulo.desc) {%>
+            <div class="dsc blk">
+                <i class="fas fa-tags"></i> Sinopse: <%= titulo.desc %>
+            </div>
+            <% } %>
+            <div class="dsc blk">
+                <i class="fas fa-address-book"></i> produzido por: <% if(titulo.crew) { %>
+                <%= titulo.crew.join(" | ") %> <% } else {%> <%= canal.nome %> <% } %>
+            </div>
+
+        </div>
+    </div>
 
     </div>
 

@@ -1,6 +1,13 @@
 <!-- No bacwards compatabilty yet: I'm a terrible person!-->
 <div class="navdiv">
-    <ul class="menu-bar">
+    <ul class="menu-bar" id="myDIV">
+
+        <a href="javascript:void(0);" class="visibledevice icon-h" onclick="myFunction()">
+            <li>
+                <i class="fa fa-bars"></i>
+            </li>
+        </a>
+
         <a href="/">
             <li>
                 <i class="fas fa-home"></i> Início
@@ -62,3 +69,16 @@
         <% } %>
     </ul>
 </div>
+
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("myDIV");
+        if (x.className === "menu-bar") {
+            x.className = "responsive";
+        } else {
+            x.className = "menu-bar";
+        }
+    };
+
+</script>
