@@ -19,6 +19,8 @@
 
 <body>
 
+    <%- include('partials/loading.ejs') %>
+
     <% if(id === json.id) {%>
     <div id="myModal" class="modal">
         <!-- Modal content -->
@@ -77,11 +79,13 @@
     <div class="sec2">
 
         <div class="cards">
+            <% if(user.id != "r2plus") {%>
             <a href="<%= `https://discord.com/users/${user.id}` %>">
                 <div class="dsc">
                     <i class="fab fa-discord"></i> discord de <%= user.name%>
                 </div>
             </a>
+            <% } %>
 
             <div class="dsc red">
 
@@ -91,6 +95,7 @@
             if(user.id == "240269142848962560"){ tags.push("dono");}
             if(user.id == "692910323383926865"){ tags.push("dono");}
             if(user.id == "759081738432938054"){ tags.push("dono");}
+            if(user.id == "r2plus"){ tags.push("oficial");}
 
             if(resu) tags.push("criador");
                         

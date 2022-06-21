@@ -19,6 +19,38 @@
 
 <body>
 
+    <%- include('partials/loading.ejs') %>
+
+    <% titulo.temps.forEach( season => { %>
+    <div id="modal<%= season.temp %>" class="modal" style="display: none">
+        <div class="modal-content">
+
+            <span class="close" onclick="closeMod(`modal<%= season.temp %>`)"><i class="fa-solid fa-xmark"></i></span>
+
+            <h1> Temporada <%= season.temp %> </h1>
+            <div class="videolist-m" style="margin-top: 50px;">
+                <div class="flex-container-m">
+
+                    <% temps[season.temp - 1].items.forEach(ep => { %>
+                    <a
+                        href="<%= `https://www.youtube.com/watch?v=${ep.snippet.resourceId.videoId}&list=${ep.snippet.playlistId}` %>">
+                        <div class="server awa" data-aos="zoom-in" data-aos-offset="-100">
+                            <img class="server-icon" src="<%= ep.snippet.thumbnails.default.url %>">
+                            <div class="server-name aea">
+                                <%= ep.snippet.title %>
+                            </div>
+                        </div>
+                    </a>
+                    <% })%>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <% }) %>
+
     <% let img = `https://i3.ytimg.com/vi/${videoid(titulo.link)}/maxresdefault.jpg` || `https://i3.ytimg.com/vi/${videoid(titulo.link)}/hqdefault.jpg` %>
 
     <%- include('partials/navbar.ejs') %>
@@ -44,9 +76,9 @@
 
     <div class="sec2 seriep">
 
-        <div class="flex-container">
+        <div class="flex-container m-o">
 
-            <div>
+            <div class="temps">
                 <div class="dsc blk">
                     <i class="fas fa-film"></i> Temporadas: <% titulo.temps.forEach( season => { %>
                     <button <% if(season.temp === "1"){ %> id="defaultOpen" <% } %> class="tablinks visibledesktop"
@@ -54,47 +86,47 @@
                     <% }) %>
                 </div>
 
-            <% titulo.temps.forEach( season => { %>
-            <div class="videolist tabcontent" id="<%= season.temp %>" style="margin-top: 50px;">
-                <div class="flex-container left">
+                <% titulo.temps.forEach( season => { %>
+                <div class="videolist tabcontent" id="<%= season.temp %>" style="margin-top: 50px;">
+                    <div class="flex-container left">
 
-                    <% temps[season.temp - 1].items.forEach(ep => { %>
-                    <a
-                        href="<%= `https://www.youtube.com/watch?v=${ep.snippet.resourceId.videoId}&list=${ep.snippet.playlistId}` %>">
-                        <div class="server visibledesktop" data-aos="zoom-in" data-aos-offset="-100">
-                            <img class="server-icon" src="<%= ep.snippet.thumbnails.default.url %>">
-                            <div class="server-name">
-                                <%= ep.snippet.title %>
+                        <% temps[season.temp - 1].items.forEach(ep => { %>
+                        <a
+                            href="<%= `https://www.youtube.com/watch?v=${ep.snippet.resourceId.videoId}&list=${ep.snippet.playlistId}` %>">
+                            <div class="server visibledesktop" data-aos="zoom-in" data-aos-offset="-100">
+                                <img class="server-icon" src="<%= ep.snippet.thumbnails.default.url %>">
+                                <div class="server-name">
+                                    <%= ep.snippet.title %>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                    <% })%>
+                        </a>
+                        <% })%>
 
-                    <% titulo.temps.forEach( season => { %>
-                        <button class="temp-ic visibledevice">
+                        <% titulo.temps.forEach( season => { %>
+                        <button class="temp-ic visibledevice" onclick="openMod(`modal<%= season.temp %>`)">
                             <%= season.temp %>
                         </button>
-                    <% }) %>
+                        <% }) %>
 
+                    </div>
+
+                </div>
+                <% }) %>
+            </div>
+
+            <div class="dir">
+                <% if(titulo.desc) {%>
+                <div class="dsc blk">
+                    <i class="fas fa-tags"></i> Sinopse: <%= titulo.desc %>
+                </div>
+                <% } %>
+                <div class="dsc blk">
+                    <i class="fas fa-address-book"></i> produzido por: <% if(titulo.crew) { %>
+                    <%= titulo.crew.join(" | ") %> <% } else {%> <%= canal.nome %> <% } %>
                 </div>
 
             </div>
-            <% }) %>
         </div>
-
-        <div class="dir">
-            <% if(titulo.desc) {%>
-            <div class="dsc blk">
-                <i class="fas fa-tags"></i> Sinopse: <%= titulo.desc %>
-            </div>
-            <% } %>
-            <div class="dsc blk">
-                <i class="fas fa-address-book"></i> produzido por: <% if(titulo.crew) { %>
-                <%= titulo.crew.join(" | ") %> <% } else {%> <%= canal.nome %> <% } %>
-            </div>
-
-        </div>
-    </div>
 
     </div>
 
@@ -160,6 +192,17 @@
 
         // Get the element with id="defaultOpen" and click on it
         document.getElementById("defaultOpen").click();
+    </script>
+
+    <script>
+        function openMod(id) {
+            var modal = document.getElementById(id);
+            modal.style.display = "block";
+        }
+        function closeMod(id) {
+            var modal = document.getElementById(id);
+            modal.style.display = "none";
+        }
     </script>
 </body>
 

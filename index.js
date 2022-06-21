@@ -294,6 +294,31 @@ app.get("/user", async function (req, res) {
 
 });
 
+app.get("/dashboard", async function (req, res) {
+
+    const user = await fetch(`https://discord.com/api/users/@me`, {
+        headers: {
+            Authorization: `Bearer ${req.session.bearer_token}`
+        },
+    }); // Fetching user data
+    const json = await user.json();
+
+    let pin = false
+
+    if(json.id == "240269142848962560") pin = true
+    if(json.id == "759081738432938054") pin = true
+    if(json.id == "692910323383926865") pin = true
+
+    console.log(pin)
+
+    if(pin === true){
+        res.render("../views/dashboard.ejs", {json, req})
+    } else {
+        res.redirect("/")
+    }
+})
+
+
 app.post('/fav', async function (req, res, next) {
 
     if (!req.session.bearer_token) {

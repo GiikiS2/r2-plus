@@ -19,20 +19,25 @@
 
 <body>
 
+  <%- include('partials/loading.ejs') %>
+
   <div class="header" id="home">
     <%- include('partials/navbar.ejs') %>
     <%- include('partials/logout.ejs') %>
     <div class="meio" style="height: 550px; margin-top: 75px">
       <img src="../assets/R2_Logo.png" class="logo-front" data-aos="zoom-in">
       <h1 data-aos="zoom-in"> Bem vindo ao R2+ </h1>
-      <p data-aos="zoom-in"> Aqui você tem acesso a diversos machinimas de fortnite, para uma melhor experiência faça login com o discord.
+      <p data-aos="zoom-in"> Aqui você tem acesso a diversos machinimas de fortnite, para uma melhor experiência faça login com o discord. 💕
       </p>
     </div>
   </div>
   <%- include('partials/discord.ejs') %>
   <%- include('partials/equipe.ejs') %>
 
-
+  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+  <script>
+      twemoji.parse(document.body)
+  </script>
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script src="js/main.js"></script>
   <script>

@@ -20,6 +20,8 @@
 
 <body>
 
+    <%- include('partials/loading.ejs') %>
+
     <% function thumb(nmbr){ return {
         "thumb": `https://i3.ytimg.com/vi/${videoid(inv[nmbr].series[0].link)}/maxresdefault.jpg`,
         "nome": inv[nmbr].series[0].nome
